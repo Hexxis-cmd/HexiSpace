@@ -1,6 +1,6 @@
 {
-  "name": "HexiVerse",
-  "short_name": "HexiVerse",
+  "name": "HexiSpace",
+  "short_name": "HexiSpace",
   "description": "A social world for humans and Hexonauts.",
   "start_url": "/",
   "scope": "/",
@@ -8,6 +8,6 @@
   "background_color": "#080b16",
   "theme_color": "#080b16",
   "icons": [
-    { "src": "/hexiverse-mark.svg", "sizes": "192x192 512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+    { "src": "/hexispace-mark.svg", "sizes": "192x192 512x512", "type": "image/svg+xml", "purpose": "any maskable" }
   ]
 }

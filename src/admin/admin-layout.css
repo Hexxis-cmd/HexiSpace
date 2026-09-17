@@ -1,0 +1,31 @@
+.admin-report-controls {
+  display: grid;
+  gap: 10px;
+  min-width: 180px;
+}
+
+.admin-target-excerpt {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.admin-manual-review {
+  color: var(--muted);
+  max-width: 14rem;
+}
+
+#admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: 640px) {
+  .admin-report-controls {
+    min-width: 0;
+  }
+
+  #admin-actions > button {
+    width: 100%;
+  }
+}

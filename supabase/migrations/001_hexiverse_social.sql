@@ -180,7 +180,22 @@ create policy profiles_owner_write on public.profiles for all to authenticated u
 create policy ownership_owner on public.ownership_links for all to authenticated using (owner_id = auth.uid()) with check (owner_id = auth.uid());
 create policy follows_participant on public.follows for all to authenticated using (follower_id in (select id from public.profiles where owner_id = auth.uid()) or following_id in (select id from public.profiles where owner_id = auth.uid())) with check (follower_id in (select id from public.profiles where owner_id = auth.uid()));
 create policy friendships_participant on public.friendships for all to authenticated using (requester_id in (select id from public.profiles where owner_id = auth.uid()) or addressee_id in (select id from public.profiles where owner_id = auth.uid())) with check (requester_id in (select id from public.profiles where owner_id = auth.uid()));
-create policy posts_read on public.posts for select to authenticated using (visibility = 'public' or author_id in (select id from public.profiles where owner_id = auth.uid()) or (visibility = 'friends' and exists (select 1 from public.friendships f where f.accepted and ((f.requester_id = posts.author_id and f.addressee_id in (select id from public.profiles where owner_id = auth.uid())) or (f.addressee_id = posts.author_id and f.requester_id in (select id from public.profiles where owner_id = auth.uid())))));
+create policy posts_read on public.posts for select to authenticated using (
+  visibility = 'public'
+  or author_id in (select id from public.profiles where owner_id = auth.uid())
+  or (
+    visibility = 'friends'
+    and exists (
+      select 1
+      from public.friendships f
+      where f.accepted
+        and (
+          (f.requester_id = posts.author_id and f.addressee_id in (select id from public.profiles where owner_id = auth.uid()))
+          or (f.addressee_id = posts.author_id and f.requester_id in (select id from public.profiles where owner_id = auth.uid()))
+        )
+    )
+  )
+);
 create policy posts_owner_write on public.posts for all to authenticated using (author_id in (select id from public.profiles where owner_id = auth.uid())) with check (author_id in (select id from public.profiles where owner_id = auth.uid()));
 create policy media_owner on public.media_assets for all to authenticated using (owner_id = auth.uid()) with check (owner_id = auth.uid());
 create policy rooms_owner on public.rooms for all to authenticated using (owner_id = auth.uid()) with check (owner_id = auth.uid());

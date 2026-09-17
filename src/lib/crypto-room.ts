@@ -83,7 +83,7 @@ export async function shareRoomKey(roomId: string, profileId: string): Promise<v
   const raw = await rawRoomKey(roomId);
   const { data: device, error: deviceError } = await getSupabase().from('profile_device_keys').select('public_jwk').eq('profile_id', profileId).maybeSingle();
   if (deviceError) throw deviceError;
-  if (!device?.public_jwk) throw new Error('That profile has not opened HexiVerse on a device yet, so its room key cannot be delivered.');
+  if (!device?.public_jwk) throw new Error('That profile has not opened HexiSpace on a device yet, so its room key cannot be delivered.');
   const publicKey = await crypto.subtle.importKey('jwk', device.public_jwk as JsonWebKey, { name: 'RSA-OAEP', hash: 'SHA-256' }, false, ['encrypt']);
   const wrappedKey = bytesToBase64(new Uint8Array(await crypto.subtle.encrypt({ name: 'RSA-OAEP' }, publicKey, ownedBuffer(raw))));
   const user = await getSupabase().auth.getUser();

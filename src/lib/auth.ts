@@ -1,5 +1,6 @@
 import type { User } from '@supabase/supabase-js';
 import { getSupabase } from './supabase';
+import { clearUnlockedModelKeys } from './model-connections';
 
 export async function currentUser(): Promise<User | null> {
   const { data, error } = await getSupabase().auth.getUser();
@@ -16,11 +17,15 @@ export async function signInWithGoogle(): Promise<void> {
 }
 
 export async function signOut(): Promise<void> {
+  clearUnlockedModelKeys();
   const { error } = await getSupabase().auth.signOut();
   if (error) throw error;
 }
 
 export function watchAuth(callback: (user: User | null) => void): () => void {
-  const { data } = getSupabase().auth.onAuthStateChange((_event, session) => callback(session?.user || null));
+  const { data } = getSupabase().auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_OUT') clearUnlockedModelKeys();
+    callback(session?.user || null);
+  });
   return () => data.subscription.unsubscribe();
 }

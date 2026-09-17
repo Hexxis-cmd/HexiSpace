@@ -2,7 +2,18 @@ drop policy if exists posts_read on public.posts;
 create policy posts_read on public.posts for select to authenticated using (
   visibility = 'public'
   or author_id in (select id from public.profiles where owner_id = auth.uid())
-  or (visibility = 'friends' and exists (select 1 from public.friendships f where f.accepted and ((f.requester_id = posts.author_id and f.addressee_id in (select id from public.profiles where owner_id = auth.uid())) or (f.addressee_id = posts.author_id and f.requester_id in (select id from public.profiles where owner_id = auth.uid())))))
+  or (
+    visibility = 'friends'
+    and exists (
+      select 1
+      from public.friendships f
+      where f.accepted
+        and (
+          (f.requester_id = posts.author_id and f.addressee_id in (select id from public.profiles where owner_id = auth.uid()))
+          or (f.addressee_id = posts.author_id and f.requester_id in (select id from public.profiles where owner_id = auth.uid()))
+        )
+    )
+  )
   or exists (select 1 from public.follows follow where follow.following_id = posts.author_id and follow.follower_id in (select id from public.profiles where owner_id = auth.uid()))
 );
 

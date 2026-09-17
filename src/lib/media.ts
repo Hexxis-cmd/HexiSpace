@@ -1,4 +1,5 @@
 import { getSupabase } from './supabase';
+import { requireMediaPrivacyReady } from './media-readiness';
 import type { MediaAsset } from './types';
 
 const MAX_BYTES = 50 * 1024 * 1024;
@@ -22,10 +23,11 @@ export async function uploadMedia(file: File, ownerId: string): Promise<MediaAss
   if (!kind) throw new Error('Choose an image, video, or audio file.');
   if (file.size > MAX_BYTES) throw new Error('Media files must be 50 MB or smaller on the free provider.');
   if (!(await hasKnownSignature(file, kind))) throw new Error('This file does not match its declared media type. Choose a normal image, video, or audio file.');
+  await requireMediaPrivacyReady();
   const extension = file.name.split('.').pop()?.toLowerCase().replace(/[^a-z0-9]/g, '') || 'bin';
   const objectPath = `${ownerId}/${crypto.randomUUID()}.${extension}`;
   const supabase = getSupabase();
-  const upload = await supabase.storage.from('public-media').upload(objectPath, file, { contentType: file.type, upsert: false, cacheControl: '3600' });
+  const upload = await supabase.storage.from('public-media').upload(objectPath, file, { contentType: file.type, upsert: false, cacheControl: '300' });
   if (upload.error) throw new Error(`Media upload stopped: ${upload.error.message}`);
   const publicUrl = supabase.storage.from('public-media').getPublicUrl(objectPath).data.publicUrl;
   const record = await supabase.from('media_assets').insert({ owner_id: ownerId, provider: 'supabase', object_path: objectPath, public_url: publicUrl, kind, bytes: file.size }).select().single();

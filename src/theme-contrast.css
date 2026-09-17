@@ -1,0 +1,12 @@
+/* Foreground colors paired with each theme's solid accent/status fills. */
+.menu-button:hover,
+.menu-button.is-open,
+.post-button:hover,
+.menu-icon-button:hover,
+.menu-icon-button[aria-expanded="true"] {
+  color: var(--on-accent);
+}
+
+.tab-count {
+  color: var(--on-danger);
+}

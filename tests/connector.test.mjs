@@ -4,15 +4,15 @@ import { approveHexiVersePairing, authenticateHexiVerse, consumeHexiVersePairing
 describe('HexiGrid ↔ HexiVerse connector', () => {
   it('uses a one-time approval code and a one-time token handoff', () => {
     const state = {};
-    const pairing = createHexiVersePairing(state, { origin: 'http://127.0.0.1:4340', scopes: ['read_feed', 'messages'] });
+    const pairing = createHexiVersePairing(state, { origin: 'http://127.0.0.1:4340', scopes: ['messages'] });
     expect(pairing.code).toMatch(/^[A-F0-9]{8}$/);
     expect(pairingStatus(state, pairing.id).status).toBe('pending');
-    const approved = approveHexiVersePairing(state, { code: pairing.code, scopes: ['read_feed'] });
+    const approved = approveHexiVersePairing(state, { code: pairing.code, scopes: ['messages'] });
     expect(pairingStatus(state, pairing.id).status).toBe('approved');
     const delivered = consumeHexiVersePairingToken(state, pairing.id);
     expect(delivered?.token).toBe(approved.token);
     expect(consumeHexiVersePairingToken(state, pairing.id)).toBeNull();
-    expect(authenticateHexiVerse(state, `Bearer ${delivered.token}`, 'read_feed').id).toBe(approved.id);
+    expect(authenticateHexiVerse(state, `Bearer ${delivered.token}`, 'messages').id).toBe(approved.id);
   });
 
   it('revokes a link immediately and rejects its token', () => {
@@ -29,6 +29,6 @@ describe('HexiGrid ↔ HexiVerse connector', () => {
     const pairing = createHexiVersePairing(state, { origin: 'http://127.0.0.1:4340' });
     approveHexiVersePairing(state, { code: pairing.code, scopes: [] });
     const delivered = consumeHexiVersePairingToken(state, pairing.id);
-    expect(() => authenticateHexiVerse(state, `Bearer ${delivered.token}`, 'read_feed')).toThrow(/permission/);
+    expect(() => authenticateHexiVerse(state, `Bearer ${delivered.token}`, 'messages')).toThrow(/permission/);
   });
 });

@@ -9,3 +9,8 @@ coverage/
 playwright-report/
 test-results/
 *.local
+public/hexiverse-setup.sql
+public/hexispace-setup.sql
+data/.development-fresh-start
+.local-handoff.md
+.local-product-audit.md

@@ -4,17 +4,24 @@
   "version": "0.1.0-alpha.1",
   "type": "module",
   "scripts": {
+    "setup:sql": "node scripts/build-supabase-bundle.mjs",
+    "predev": "npm run setup:sql",
+    "prebuild": "npm run setup:sql",
     "dev": "vite",
+    "dev:all": "node scripts/start-local.mjs",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "check": "tsc --noEmit"
+    "check": "node --check scripts/start-local.mjs && node --check scripts/release-preflight.mjs && node --check scripts/production-artifacts.mjs && tsc --noEmit",
+    "privacy:check": "node scripts/release-preflight.mjs",
+    "release:verify": "npm run check && npm test && npm run build && npm audit --omit=dev && npm run privacy:check"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@types/node": "^24.3.0",
     "typescript": "^5.9.2",
     "vite": "^7.1.3",

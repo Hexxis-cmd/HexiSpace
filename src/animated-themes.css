@@ -1,0 +1,83 @@
+/* One low-cost moving light field distinguishes animated themes from static palettes. */
+.app-frame.theme-hermes::before,
+.app-frame.theme-hephaestus::before,
+.app-frame.theme-dionysus::before,
+.app-frame.theme-aphrodite::before,
+.app-frame.theme-hera::before,
+.app-frame.theme-ares::before {
+  content: "";
+  position: absolute;
+  inset: -9%;
+  z-index: 0;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  opacity: .56;
+  transform: translate3d(-3.5%, -2.5%, 0) scale(1.04);
+  animation: theme-field-drift var(--theme-motion-duration, 22s) ease-in-out infinite alternate;
+}
+
+.app-frame.theme-hermes::before {
+  --theme-motion-duration: 19s;
+  background-image:
+    radial-gradient(ellipse 48% 44% at 14% 18%, color-mix(in srgb, var(--accent-alt) 45%, transparent), transparent 100%),
+    linear-gradient(116deg, transparent 34%, color-mix(in srgb, var(--accent) 18%, transparent) 48%, transparent 62%),
+    radial-gradient(ellipse 34% 38% at 88% 78%, color-mix(in srgb, var(--warm) 22%, transparent), transparent 100%);
+}
+
+.app-frame.theme-hephaestus::before {
+  --theme-motion-duration: 17s;
+  background-image:
+    radial-gradient(ellipse 52% 45% at 76% 80%, color-mix(in srgb, var(--warm) 44%, transparent), transparent 100%),
+    radial-gradient(ellipse 42% 38% at 17% 92%, color-mix(in srgb, var(--accent-alt) 40%, transparent), transparent 100%),
+    linear-gradient(165deg, transparent 50%, color-mix(in srgb, var(--accent) 16%, transparent) 72%, transparent 90%);
+}
+
+.app-frame.theme-dionysus::before {
+  --theme-motion-duration: 24s;
+  background-image:
+    radial-gradient(ellipse 52% 48% at 14% 78%, color-mix(in srgb, var(--accent) 44%, transparent), transparent 100%),
+    radial-gradient(ellipse 44% 42% at 84% 16%, color-mix(in srgb, var(--accent-alt) 42%, transparent), transparent 100%),
+    linear-gradient(35deg, transparent 46%, color-mix(in srgb, var(--warm) 16%, transparent) 54%, transparent 64%);
+}
+
+.app-frame.theme-aphrodite::before {
+  --theme-motion-duration: 26s;
+  opacity: .4;
+  background-image:
+    radial-gradient(ellipse 52% 45% at 19% 15%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 100%),
+    radial-gradient(ellipse 46% 44% at 86% 78%, color-mix(in srgb, var(--accent-alt) 30%, transparent), transparent 100%),
+    linear-gradient(128deg, transparent 39%, color-mix(in srgb, var(--warm) 14%, transparent) 52%, transparent 65%);
+}
+
+.app-frame.theme-hera::before {
+  --theme-motion-duration: 23s;
+  background-image:
+    radial-gradient(ellipse 50% 42% at 78% 16%, color-mix(in srgb, var(--warm) 38%, transparent), transparent 100%),
+    radial-gradient(ellipse 50% 45% at 17% 77%, color-mix(in srgb, var(--accent-alt) 40%, transparent), transparent 100%),
+    linear-gradient(155deg, transparent 42%, color-mix(in srgb, var(--accent) 17%, transparent) 55%, transparent 68%);
+}
+
+.app-frame.theme-ares::before {
+  --theme-motion-duration: 18s;
+  background-image:
+    radial-gradient(ellipse 52% 47% at 81% 87%, color-mix(in srgb, var(--warm) 40%, transparent), transparent 100%),
+    radial-gradient(ellipse 48% 45% at 12% 19%, color-mix(in srgb, var(--danger) 34%, transparent), transparent 100%),
+    linear-gradient(165deg, transparent 52%, color-mix(in srgb, var(--accent) 18%, transparent) 72%, transparent 90%);
+}
+
+@keyframes theme-field-drift {
+  from { transform: translate3d(-3.5%, -2.5%, 0) scale(1.04); }
+  to { transform: translate3d(3.5%, 2.5%, 0) scale(1.09); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-frame.theme-hermes::before,
+  .app-frame.theme-hephaestus::before,
+  .app-frame.theme-dionysus::before,
+  .app-frame.theme-aphrodite::before,
+  .app-frame.theme-hera::before,
+  .app-frame.theme-ares::before {
+    animation: none;
+    transform: none;
+  }
+}

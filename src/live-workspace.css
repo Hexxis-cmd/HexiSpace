@@ -1,0 +1,74 @@
+.utility-menu.is-live-workspace {
+  max-height: calc(100dvh - 84px) !important;
+}
+
+.utility-menu.is-live-workspace .drawer-content {
+  max-height: calc(100dvh - 156px) !important;
+  overflow: auto;
+}
+
+.live-spaces-panel {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 14px;
+}
+
+.live-spaces-panel > h2,
+.live-spaces-panel > p {
+  margin: 0;
+}
+
+.live-workspace-frame-wrap {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+.live-workspace-frame-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.live-workspace-frame {
+  display: block;
+  width: 100%;
+  height: min(68dvh, 820px);
+  min-height: 520px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #080b16;
+}
+
+.live-workspace-frame-wrap > small {
+  line-height: 1.45;
+}
+
+.live-separate-link {
+  text-decoration: none;
+}
+
+@media (min-width: 641px) {
+  .utility-menu.is-live-workspace {
+    width: min(1040px, calc(100vw - 24px)) !important;
+    left: auto !important;
+    right: 12px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .live-workspace-frame {
+    height: 68dvh;
+    min-height: 420px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-workspace-frame,
+  .live-workspace-frame-wrap {
+    scroll-behavior: auto;
+  }
+}
